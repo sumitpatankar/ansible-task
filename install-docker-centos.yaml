@@ -1,0 +1,60 @@
+---
+- name: Install Docker and Docker Compose on CentOS
+  hosts: default
+  become: true
+
+  tasks:
+    - name: Remove docker if installed on CentOS
+      yum:
+        name:
+          - docker
+          - docker-client
+          - docker-client-latest
+          - docker-common
+          - docker-latest
+          - docker-latest-logrotate
+          - docker-logrotate
+          - docker-engine
+        state: absent
+    - name: Install required packages
+      yum:
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+        state: latest
+      when: ("ansible_facts['os_family'] == 'RedHat'") or (ansible_facts['distribution'] == "CentOS")
+
+    - name: Add docker repo
+      get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
+
+    - name: Install Docker
+      yum:
+        name: "{{ item }}"
+        with_items:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: latest
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Check if Docker Compose is installed
+      command: docker-compose --version
+      register: docker_compose_check
+      ignore_errors: yes
+
+    - name: Download and install Docker Compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64
+        dest: /usr/bin/docker-compose
+        mode: 0755
+      when:
+        - docker_compose_check.msg is defined
+        - docker_compose_check.msg.find('No such file or directory') != -1
