@@ -24,7 +24,7 @@
           - yum-utils
           - device-mapper-persistent-data
           - lvm2
-        state: latest
+        state: present
       when: ("ansible_facts['os_family'] == 'RedHat'") or (ansible_facts['distribution'] == "CentOS")
       run_once: true
 
@@ -37,7 +37,7 @@
     - name: Install Docker
       yum:
         name: "{{ item }}"
-        state: latest
+        state: present
       with_items:
         - docker-ce
         - docker-ce-cli
