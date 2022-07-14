@@ -12,7 +12,7 @@
 
     - name: Create .kube directory
       become: true
-      become_user: "{{ kube_user }}"
+      become_user: cloud_user
       file:
         path: $HOME/.kube
         state: directory
@@ -22,10 +22,10 @@
       become_user: root
       copy:
         src: /etc/kubernetes/admin.conf
-        dest: /home/{{ kube_user }}/.kube/config
+        dest: /home/cloud_user/.kube/config
         remote_src: yes
         become_user: root
-        owner: "{{ kube_user }}"
+        owner: cloud_user
         mode: "0644"
 
     # - name: Setup kubeconfig for cloud_user user
@@ -36,7 +36,7 @@
     #     - chown $(id -u):$(id -g) $HOME/.kube/config
     - name: Install Calico as Pod network
       become: false
-      become_user: "{{ kube_user }}"
+      become_user: cloud_user
       shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
       args:
         chdir: $HOME
