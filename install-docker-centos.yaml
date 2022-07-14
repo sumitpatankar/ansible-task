@@ -2,6 +2,7 @@
 - name: Install Docker and Docker Compose on CentOS
   hosts: default
   become: true
+  gather_facts: False
 
   tasks:
     - name: Remove docker if installed on CentOS

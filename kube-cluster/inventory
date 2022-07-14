@@ -1,0 +1,5 @@
+[masters]
+master-k8s ansible_host=[IP_MASTER] ansible_user=cloud_user
+
+[workers]
+worker-k8s ansible_host=[IP_WORKER_1] ansible_user=cloud_user
