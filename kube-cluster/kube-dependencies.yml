@@ -26,6 +26,11 @@
         sudo modprobe br_netfilter
 
     - name: Set system configurations for Kubernetes networking
+      file:
+        path: "/etc/sysctl.d/99-kubernetes-cri.conf"
+        state: "touch"
+
+    - name: Add conf for containerd
       blockinfile:
         file:
           dest: "/etc/sysctl.d/99-kubernetes-cri.conf"
