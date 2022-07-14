@@ -1,0 +1,42 @@
+---
+- hosts: masters
+  become: true
+  tasks:
+    - name: Initialise the cluster
+      shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --kubernetes-version 1.23.0 >> cluster_initialized.txt
+      args:
+        chdir: $HOME
+        creates: cluster_initialized.txt
+      become: true
+      become_user: root
+
+    - name: Create .kube directory
+      become: true
+      become_user: "{{ kube_user }}"
+      file:
+        path: $HOME/.kube
+        state: directory
+        mode: 0755
+
+    - name: Copy admin.conf to User's kube config
+      become_user: root
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/{{ kube_user }}/.kube/config
+        remote_src: yes
+        become_user: root
+        owner: "{{ kube_user }}"
+        mode: "0644"
+
+    # - name: Setup kubeconfig for cloud_user user
+    #     command: "{{ item }}"
+    #     with_items:
+    #     - mkdir -p $HOME/.kube
+    #     - cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    #     - chown $(id -u):$(id -g) $HOME/.kube/config
+    - name: Install Calico as Pod network
+      become: false
+      become_user: "{{ kube_user }}"
+      shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+      args:
+        chdir: $HOME
