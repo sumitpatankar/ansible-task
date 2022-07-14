@@ -1,6 +1,6 @@
 ---
 - name: Install Docker and Docker Compose on CentOS
-  hosts: default
+  hosts: all
   become: true
   gather_facts: False
 
