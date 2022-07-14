@@ -37,11 +37,11 @@
     - name: Install Docker
       yum:
         name: "{{ item }}"
-        with_items:
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
         state: latest
+      with_items:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
       run_once: true
 
     - name: Start Docker service
