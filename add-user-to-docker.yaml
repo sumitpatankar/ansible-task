@@ -1,0 +1,15 @@
+---
+- hosts: docker-k8s
+  become: true
+  gather_facts: False
+
+  vars_prompt:
+    - name: "docker_user"
+      prompt: "Mention non-root user to use docker"
+      private: no
+  tasks:
+    - name: Adding user to docker group(s)
+      ansible.builtin.user:
+        name: "{{ docker_user }}"
+        groups: docker
+        append: true
