@@ -28,7 +28,7 @@
     - name: Set system configurations for Kubernetes networking
       blockinfile:
         file:
-          path: "/etc/sysctl.d/99-kubernetes-cri.conf"
+          dest: "/etc/sysctl.d/99-kubernetes-cri.conf"
           block: |
             'net.bridge.bridge-nf-call-iptables = 1'
             'net.ipv4.ip_forward = 1'
