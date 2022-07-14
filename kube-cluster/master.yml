@@ -24,9 +24,7 @@
         src: /etc/kubernetes/admin.conf
         dest: /home/cloud_user/.kube/config
         remote_src: yes
-        become_user: root
         owner: cloud_user
-        mode: "0644"
 
     # - name: Setup kubeconfig for cloud_user user
     #     command: "{{ item }}"
