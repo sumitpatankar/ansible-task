@@ -14,7 +14,7 @@
 
     - name: Add conf for containerd
       blockinfile:
-        dest: "/etc/modules-load.d/containerd.conf"
+        path: /etc/modules-load.d/containerd.conf
         block: |
           overlay
           br_netfilter
