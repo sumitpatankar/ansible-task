@@ -2,8 +2,8 @@
 - hosts: masters
   become: true
   tasks:
-    - name: Initialise the cluster
-      shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --kubernetes-version 1.23.0 >> cluster_initialized.txt
+    - name: Initialise the cluster # Ignore preflight-errors
+      shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --kubernetes-version 1.23.0 --ignore-preflight-errors=ALL >> cluster_initialized.txt
       args:
         chdir: $HOME
         creates: cluster_initialized.txt
