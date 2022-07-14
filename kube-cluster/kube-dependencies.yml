@@ -13,6 +13,7 @@
         state: touch
 
     - name: Add conf for containerd
+      become: true
       blockinfile:
         path: /etc/modules-load.d/containerd.conf
         block: |
