@@ -1,7 +1,6 @@
 ---
 - hosts: masters
-  become: true
-  become_user: root
+  become: yes
   gather_facts: false
   connection: ssh
   tasks:
@@ -30,7 +29,7 @@
     # - debug:
     #     msg: "{{ joined_or_not.stdout }}"
     - name: join cluster
-      shell: "{{ hostvars['masters'].join_command }} --ignore-preflight-errors all  >> node_joined.txt"
+      shell: "{{ hostvars['master-k8s'].join_command }} --ignore-preflight-errors all  >> node_joined.txt"
       args:
         chdir: $HOME
         creates: node_joined.txt
