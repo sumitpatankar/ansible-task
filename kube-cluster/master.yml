@@ -7,11 +7,13 @@
       shell: kubeadm config images pull
 
     - name: Initialise the cluster # Ignore preflight-errors
-      shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --kubernetes-version 1.23.0 --ignore-preflight-errors=ALL >> cluster_initialized.txt
+      shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --kubernetes-version 1.23.0 --ignore-preflight-errors=ALL
       args:
         chdir: $HOME
         creates: cluster_initialized.txt
+      run_once: true
       become_user: root
+      become_method: sudo
 
     - pause: seconds=45
 
