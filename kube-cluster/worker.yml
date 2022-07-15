@@ -21,6 +21,8 @@
 
     - name: Join the node to cluster
       command: sh /tmp/join-command.sh
+      become_user: root
+      become_method: sudo
       register: joined_or_not
 
     - debug:
