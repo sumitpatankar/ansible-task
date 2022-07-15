@@ -2,7 +2,7 @@
 - hosts: masters
   become: true
   become_user: root
-  gather_facts: yes
+  gather_facts: false
   connection: ssh
   tasks:
     - name: Get join command
