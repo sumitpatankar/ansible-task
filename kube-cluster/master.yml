@@ -1,7 +1,9 @@
 ---
 - hosts: masters
   become: true
-  gather_facts: False
+  become_user: root
+  gather_facts: yes
+  connection: ssh
   tasks:
     - name: Mannually pull kube config images
       shell: kubeadm config images pull
