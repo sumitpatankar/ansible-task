@@ -13,7 +13,9 @@
       become_user: root
       become_method: sudo
 
-    - pause: seconds=45
+    - name: Wait 30 seconds to fully Initialise the kubernetes cluster
+      wait_for:
+        timeout: 30
 
     - name: Create .kube directory
       become: true
@@ -31,12 +33,6 @@
         remote_src: yes
         owner: cloud_user
 
-    # - name: Setup kubeconfig for cloud_user user
-    #     command: "{{ item }}"
-    #     with_items:
-    #     - mkdir -p $HOME/.kube
-    #     - cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-    #     - chown $(id -u):$(id -g) $HOME/.kube/config
     - name: Install Calico as Pod network
       become: false
       become_user: cloud_user
