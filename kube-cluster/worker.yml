@@ -31,7 +31,7 @@
     # - debug:
     #     msg: "{{ joined_or_not.stdout }}"
     - name: join cluster
-      shell: "{{ hostvars['master'].join_command }} --ignore-preflight-errors=ALL >> node_joined.txt"
+      shell: "{{ hostvars['masters'].join_command }} --ignore-preflight-errors=ALL >> node_joined.txt"
       args:
         chdir: $HOME
         creates: node_joined.txt
