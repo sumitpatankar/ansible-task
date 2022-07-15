@@ -11,23 +11,10 @@
     - name: Set join command
       set_fact:
         join_command: "{{ join_command_raw.stdout_lines[0] }}"
-    # - name: Copy join command to local file
-    #   local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
 
 - hosts: workers
   become: yes
   tasks:
-    # # - name: Copy the join command to server location
-    # #   copy: src=join-command dest=/tmp/join-command.sh mode=0777
-
-    # - name: Join the node to cluster
-    #   command: sh /tmp/join-command.sh
-    #   become_user: root
-    #   become_method: sudo
-    #   register: joined_or_not
-
-    # - debug:
-    #     msg: "{{ joined_or_not.stdout }}"
     - name: join cluster
       shell: "{{ hostvars['master-k8s'].join_command }} --ignore-preflight-errors all  >> node_joined.txt"
       args:
